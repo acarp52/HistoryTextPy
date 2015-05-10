@@ -2,6 +2,8 @@ import nltk
 from nltk import *
 
 def main():
+
+    #"test"
     file = input('Please enter a file to analyze: ')
     f = open(file)
     words = f.read()
