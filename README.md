@@ -19,6 +19,6 @@ The overarching goal of this project is to learn how to develop a proper languag
 6. Create a graphical user interface that allows the user to query the language model.
 
 ## External Libraries
-This project makes use of the Stanford CoreNLP, a java library which includes a wide variety of functions related to natural language processing. See [Stanford CoreNLP](http://nlp.stanford.edu/software/corenlp.shtml) for more information.
+This project makes use of NLTK, a platform for building Python programs to work with human language data. See [NLTK 3.0](http://www.nltk.org/) for more information.
 
 The linguistic data used in this project was gathered from many literary works provided and maintained by [Project Gutenberg](https://www.gutenberg.org/).
