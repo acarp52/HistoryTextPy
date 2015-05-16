@@ -1,3 +1,19 @@
+"""
+# HistoryText.py
+
+## Authors
+* Andrew Carpenter
+* Benjamin Meyers
+
+## About
+This is a project written for ENGL-351, Language Technology at RIT.
+
+## Goals
+The overarching goal of this project is to learn how to develop a proper language
+model, and to use that language model to analyze a selection of text in order to
+estimate the time period in which that selection of text was written.
+
+"""
 import nltk
 import os
 import string
@@ -10,7 +26,7 @@ from nltk.corpus import wordnet
 
 """
 Takes a list of tokenized input strings and creates unigrams, bigrams, trigrams,
-and tetragrams. It then prints the results.
+and tetragrams FOR A SPECIFIC TEST FILE.
 """
 def make_tokens_test(toks):
     year = "test"
@@ -22,7 +38,7 @@ def make_tokens_test(toks):
 
     unifd = nltk.FreqDist(myuni)
 
-    with open('out/{0}/1g.csv'.format(year), 'w', newline='') as csvfile:
+    with open('{0}/1g.csv'.format(year), 'w', newline='') as csvfile:
         fieldnames = ['word1', 'frequency']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         # writer.writeheader()
@@ -37,7 +53,7 @@ def make_tokens_test(toks):
 
     bifd = nltk.FreqDist(mybi)
 
-    with open('out/{0}/2g.csv'.format(year), 'w', newline='') as csvfile:
+    with open('{0}/2g.csv'.format(year), 'w', newline='') as csvfile:
         fieldnames = ['word1', 'word2', 'frequency']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         # writer.writeheader()
@@ -52,7 +68,7 @@ def make_tokens_test(toks):
 
 
     trifd = nltk.FreqDist(mytri)
-    with open('out/{0}/3g.csv'.format(year), 'w', newline='') as csvfile:
+    with open('{0}/3g.csv'.format(year), 'w', newline='') as csvfile:
         fieldnames = ['word1', 'word2', 'word3', 'frequency']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         # writer.writeheader()
@@ -66,7 +82,7 @@ def make_tokens_test(toks):
 
 
     tetrafd = nltk.FreqDist(mytetra)
-    with open('out/{0}/4g.csv'.format(year), 'w', newline='') as csvfile:
+    with open('{0}/4g.csv'.format(year), 'w', newline='') as csvfile:
         fieldnames = ['word1', 'word2', 'word3', 'word4', 'frequency']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         # writer.writeheader()
@@ -80,6 +96,10 @@ def make_tokens_test(toks):
 
     return "Analysis finished for {0}".format(year)
 
+"""
+Takes a list of tokenized input strings and creates unigrams, bigrams, trigrams,
+and tetragrams for our entire corpus.
+"""
 def make_tokens(toks, year):
     if year == "xxxx":
             return make_tokens_test(toks)
@@ -180,6 +200,9 @@ def readfile(f):
             words += line   #appends to a string for the data in the file we are interested in
     return words
 
+"""
+Reads files from a directory
+"""
 def scandir(folder):
     path = r'C:\Users\acarp_000\PycharmProjects\HistoryText\{0}'.format(folder)  # remove the trailing '\'
     data = []
@@ -190,6 +213,9 @@ def scandir(folder):
 
     return data
 
+"""
+A helper function to tokenize and process our corpus
+"""
 def build_model():
     d = scandir("training_data")
     for file_path in d:
@@ -202,43 +228,47 @@ def build_model():
         except UnicodeDecodeError:
             print("File for {0} could not be read.".format(file_path[61:65]))
 
+"""
+Our main routine. Calls other helper functions and builds our csv corpus
+"""
 def main():
-    # ofile  = open('out.csv', "w", newline='')
-    # writer = csv.writer(ofile, delimiter='\t', lineterminator='\n')
 
-    """
-    print("Please select a task, or enter h for help:")
-    print("1 - Train language model")
-    print("2 - Test  language model")
-    print("3 - Try a specific file")
-    """
-
-    build_model()
-
+    # build_model()
 
     newfile = input("Please enter the file you would like to test: ")
     words = readfile(newfile)
     tok = word_tokenize(process(words))
     print(make_tokens(tok, "xxxx"))
 
-    test_list = scandir("src/out/test")
+    # test_list = scandir("src/out/test")
     # print(test_list)
 
     rootdir = r'C:\Users\acarp_000\PycharmProjects\HistoryText\src\out'
+    masteryear = [-1, 0.0]
     for subdir, dirs, files in os.walk(rootdir):
+        currYear = subdir[55:]
+        yearScore = 0.0
         for file in files:
+            fileScore = 0.0
             # print(os.path.join(subdir, file))
             # print(file)
-            with open(os.path.join(subdir, file), newline='') as csvfile, open(rootdir+'/test/{0}'.format(file)) as testfile:
-                print("File = " + file)
+            with open(os.path.join(subdir, file), newline='') as csvfile, open(rootdir+'/../test/{0}'.format(file)) as testfile:
+                # print("Year = " + subdir[55:])
                 reader = csv.reader(csvfile)
                 readertest = csv.reader(testfile)
-                next(reader, None)
-                row2 = next(readertest, None)
+
+                tf = []
+                index = 0
+                for r2 in readertest:
+                    tf.append(r2)
+                # print(tf)
                 for row in reader:
+                    row2 = tf[index]
                     # row2 = next(readertest, None)
-                    print("Current test row: "+ row2)
-                    print("Current Data row: "+ row2)
+                    # print("Current test row: ")
+                    # print(row2)
+                    # print("Current data row: ")
+                    # print(row)
 
                     for i in range(0, len(row)):
                         avg = 0
@@ -268,19 +298,29 @@ def main():
                                 # print("whoops")
                                 pass
 
-                        print(row2[i] + ": similarity = " + str(avg))
-                        row2 = next(readertest, None)
+                        # print(row2[i] + ": similarity = " + str(avg))
+                        # if avg > 0:
 
-                        """
-                        try:
-                            hit = wordnet.synset('me.n.01')
-                            tes = wordnet.synset(i + '.n.01')
-                            print(wordnet.path_similarity(tes, hit))
-                        except nltk.corpus.reader.wordnet.WordNetError:
-                            print("Word is not a noun.")
-                        """
+                        # row2 = next(readertest, None)
+                        fileScore += avg
+                    index += 1
 
-                    # print(row)
+                    # print("fileScore: " + str(fileScore))
+                yearScore += fileScore
+            # print("yearScore: " + str(yearScore))
+        print(str(currYear) + " : " + str(yearScore))
+        if yearScore > masteryear[1]:
+            masteryear[0] = currYear
+            masteryear[1] = yearScore
+        """
+        try:
+            hit = wordnet.synset('me.n.01')
+            tes = wordnet.synset(i + '.n.01')
+            print(wordnet.path_similarity(tes, hit))
+        except nltk.corpus.reader.wordnet.WordNetError:
+            print("Word is not a noun.")
+        """
+    print("The estimated year for the file is: " + str(masteryear[0]) + " with a score of " + str(masteryear[1]))
 
 
 

@@ -1,11 +1,10 @@
-word1,word2,word3,word4,frequency
 said,Collective,0,0009,6
 name,Equality,7,2521,6
 The,sleeping,halls,white,6
+halls,white,clean,bare,6
 clean,bare,things,save,6
+Then,Collective,0,0009,6
+name,Liberty,5,3000,6
 sleeping,halls,white,clean,6
 bare,things,save,one,6
-Then,Collective,0,0009,6
-save,one,hundred,beds,6
-things,save,one,hundred,6
-halls,white,clean,bare,6
+white,clean,bare,things,6
