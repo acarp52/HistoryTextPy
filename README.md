@@ -11,9 +11,13 @@ This is a project written for ENGL-351, [Language Technology](https://www.rit.ed
 1. Open a command line.
 2. Navigate to the directory where this file is located.
 3. Run the following command:
+
       command
+
 4. You will be prompted to input the name of a text file. This file must be located in the following relative directory:
+
       directory
+
 5. Type the name of the input text file with the file extension.
 6. Press ENTER.
 7. An estimated publication year will be displayed.
